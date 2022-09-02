@@ -254,6 +254,7 @@ def main():
         enemyplane.move()
         # 读取键盘数据
         key_control(hero)
+        # 判断子弹打中飞机后，输出赢一局
         # 更新显示内容
         pygame.display.update()
 
