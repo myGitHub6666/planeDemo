@@ -58,7 +58,7 @@ class EnemyPlane(object):
     # 敌军发射子弹
     def sheBullet(self):
         # 创建一个新的敌机子弹对象
-        num = random.randint(1, 10)
+        num = random.randint(1, 100)
         if num == 3:
             newEnemyBullet = EnemyBullet(self.x, self.y, self.screen)
             # 把子弹对象添加到飞机类的enemyBulleList列表里面。
@@ -73,9 +73,9 @@ class EnemyPlane(object):
             self.direction = 'right'
 
         if self.direction == 'right':
-            self.x +=10
+            self.x +=4
         elif self.direction =="left":
-            self.x -=10
+            self.x -=4
 
     # 敌军子弹和飞机的显示
     def display(self):
