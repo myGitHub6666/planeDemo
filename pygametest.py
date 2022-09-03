@@ -58,7 +58,7 @@ class EnemyPlane(object):
     # 敌军发射子弹
     def sheBullet(self):
         # 创建一个新的敌机子弹对象
-        num = random.randint(1, 80)
+        num = random.randint(1, 10)
         if num == 3:
             newEnemyBullet = EnemyBullet(self.x, self.y, self.screen)
             # 把子弹对象添加到飞机类的enemyBulleList列表里面。
@@ -73,9 +73,9 @@ class EnemyPlane(object):
             self.direction = 'right'
 
         if self.direction == 'right':
-            self.x +=2
+            self.x +=10
         elif self.direction =="left":
-            self.x -=2
+            self.x -=10
 
     # 敌军子弹和飞机的显示
     def display(self):
@@ -109,7 +109,7 @@ class HeroPlane(object):
         '''
         # 飞机的默认位置
         self.x = 0
-        self.y = 965
+        self.y = 900
         self.screen = screen
         # 设置要显示内容的窗口
         # 生成飞机的图片对象
@@ -232,7 +232,7 @@ def main():
     # 设定一个背景图片
     background = pygame.image.load('./feiji/background.png')
     # 设置一个title
-    pygame.display.set_caption('飞机大战小游戏')
+    pygame.display.set_caption('皮皮玩的小游戏')
     # 添加背景音乐
     pygame.mixer.init()
     pygame.mixer.music.load('./feiji/background.mp3')
