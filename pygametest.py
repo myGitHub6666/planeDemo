@@ -14,6 +14,16 @@ class EnemyBullet(object):
         self.image = pygame.image.load('./feiji/bullet1.png')
         pass
 
+    def should_display(self, x=0, y=0):
+        # 越界
+        if self.y > 965:
+            return False
+        # 被击中
+        box_width = 10
+        if (x + box_width) >= self.x >= (x - box_width) and (y + box_width) >= self.y >= (y - box_width):
+            return False
+        return True
+
     # 敌军子弹显示
     def display(self):
         self.screen.blit(self.image, (self.x, self.y))
@@ -22,15 +32,6 @@ class EnemyBullet(object):
     # 敌军子弹移动
     def move(self):
         self.y += 5
-        pass
-
-    # 判断敌军子弹是否越界
-    def judge(self):
-        # 判断子弹是否越界
-        if self.y > 965:
-            return True
-        else:
-            return False
         pass
 
 
@@ -58,7 +59,7 @@ class EnemyPlane(object):
     # 敌军发射子弹
     def sheBullet(self):
         # 创建一个新的敌机子弹对象
-        num = random.randint(1, 100)
+        num = random.randint(1, 10)
         if num == 3:
             newEnemyBullet = EnemyBullet(self.x, self.y, self.screen)
             # 把子弹对象添加到飞机类的enemyBulleList列表里面。
@@ -84,20 +85,30 @@ class EnemyPlane(object):
         :return:
         '''
         self.screen.blit(self.image, (self.x, self.y))
-        # 判断一下子弹是否越界，然后把越界的子弹保存在一个列表里面
-        delBulletList = []
-        for item in self.enemyBulletList:
-            if item.judge():
-                delBulletList.append(item)  # 把越界的子弹放入一个列表中
-                pass
-        # 在敌机子弹的列表中删除越界的子弹
-        for delItem in delBulletList:
-            self.enemyBulletList.remove(delItem)
-        # 遍历剩余的子弹，并显示
+
+        # 显示子弹
+        print("Bullet num = ", len(self.enemyBulletList))
         for bullet in self.enemyBulletList:
             bullet.display()  # 循环显示子弹的位置，
             bullet.move()  # 循环显示子弹移动
         pass
+
+    def update_bullets_status(self, ranges: list):
+        # 判断一下子弹是否越界，然后把越界的子弹保存在一个列表里面
+        del_bullet_list = set()
+        for item in self.enemyBulletList:
+            if not item.should_display():
+                del_bullet_list.add(item)  # 把越界的子弹放入一个列表中
+                pass
+
+        # 判断子弹是否被击中
+        for item in self.enemyBulletList:
+            for arrange in ranges:
+                if not item.should_display(arrange[0], arrange[1]):
+                    del_bullet_list.add(item)
+
+        for del_item in del_bullet_list:
+            self.enemyBulletList.remove(del_item)
 
 
 # 创建飞机类
@@ -142,23 +153,35 @@ class HeroPlane(object):
             self.x += 10
         pass
 
+    def update_bullets_status(self):
+        need_del_item_list = []
+        for item in self.bulletlist:
+            # 判断子弹是否越界
+            if item.judge():
+                need_del_item_list.append(item)
+                pass
+
+        for i in need_del_item_list:
+            # 删除越界的子弹
+            self.bulletlist.remove(i)
+
+    def get_bullet_ranges(self) -> list:
+        self.update_bullets_status()
+
+        ranges = []
+        for item in self.bulletlist:
+            range = [item.x, item.y]
+            ranges.append(range)
+            pass
+        return ranges
+        pass
+
     def display(self):
         '''
         飞机在主屏幕的显示
         :return:
         '''
         self.screen.blit(self.image, (self.x, self.y))
-        needDelItermList = []
-        for item in self.bulletlist:
-            # 判断子弹是否越界
-            if item.judge():
-                needDelItermList.append(item)
-                pass
-        #
-        for i in needDelItermList:
-            # 删除越界的子弹
-            self.bulletlist.remove(i)
-            pass
         for bullet in self.bulletlist:
             # 遍历剩余的子弹并显示
             bullet.display()  # 显示子弹的位置
@@ -247,6 +270,7 @@ def main():
         # 显示玩家飞机图片
         hero.display()
         # 显示敌人飞机,调用显示敌机的方法
+        enemyplane.update_bullets_status(hero.get_bullet_ranges())
         enemyplane.display()
         # 敌机移动
         enemyplane.sheBullet()
