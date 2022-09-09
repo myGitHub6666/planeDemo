@@ -13,4 +13,7 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# 从0到9中取出三位数，这三位是731的概率是多少
+for i in range(0,10):
+    tuple1=()
+    tuple1.count()
