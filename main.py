@@ -1,19 +1,8 @@
-# This is a sample Python script.
+#!/usr/bin/env python
+# coding: utf-8
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from controller import Controller
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# 从0到9中取出三位数，这三位是731的概率是多少
-for i in range(0,10):
-    tuple1=()
-    tuple1.count()
+if __name__ == "__main__":
+    ctrl_hdl = Controller()
+    ctrl_hdl.run()
